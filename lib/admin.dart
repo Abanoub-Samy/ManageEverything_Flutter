@@ -1,22 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manage_everything/constans.dart';
-import 'package:manage_everything/main.dart';
 import 'package:manage_everything/responsive.dart';
+
+import 'widgets/padding_text_field.dart';
 
 class Admin extends StatefulWidget {
   @override
   _MyAdmin createState() => _MyAdmin();
 }
 
+String dropdownValue = 'Choose the class ....';
+
 class _MyAdmin extends State<Admin> {
   Responsive responsive = new Responsive();
+
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width) / 100;
     double height = (MediaQuery.of(context).size.height) / 100;
 
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         actions: <Widget>[
           PopupMenuButton<String>(
@@ -44,7 +49,53 @@ class _MyAdmin extends State<Admin> {
         centerTitle: true,
       ),
       body: Center(
-        child: Container(),
+        child: Container(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    iconSize: 20,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.white),
+                    underline: Container(
+                      height: 3,
+                      color: Colors.orange,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>[
+                      'Choose the class ....',
+                      'One',
+                      'Two',
+                      'three',
+                      'Four'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  )
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: ListView(
+                    children: <Widget>[],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

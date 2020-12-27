@@ -19,10 +19,14 @@ class Constans {
   static const String contact = "contact..";
   static const String classs = "class..";
   static const String address = "address..";
+  static const String username = "username..";
+  static const String password = "password..";
+  static const String confirmpassword = "confirm password..";
   static const String manager = "Manager";
   static const String assistant = "Assistant";
   static const String child = "Child";
   static const String save = "Save";
+
   static const List<String> choices = <String>[
     addUser,
     deleteUser,

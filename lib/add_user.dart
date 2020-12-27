@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:manage_everything/constans.dart';
 import 'package:manage_everything/responsive.dart';
@@ -7,6 +8,7 @@ import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/custom_text_field.dart';
 
 import 'widgets/circle_avatar.dart';
+import 'widgets/padding_text_field.dart';
 
 class AddUser extends StatefulWidget {
   _AddUser createState() => _AddUser();
@@ -20,6 +22,9 @@ class _AddUser extends State<AddUser> {
   final contactController = TextEditingController();
   final classController = TextEditingController();
   final addressController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmpassController = TextEditingController();
   bool _ManagerhasBeenPressed = true;
   bool _AssistanthasBeenPressed = true;
   bool _ChildhasBeenPressed = true;
@@ -130,45 +135,43 @@ class _AddUser extends State<AddUser> {
                             hintText: Constans.firstName,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              responsive.width(5, context),
-                              responsive.width(2, context),
-                              responsive.width(5, context),
-                              responsive.width(2, context)),
+                        Padding_TextField(
                           child: Custom_TextField(
                             controller: lastNameController,
                             hintText: Constans.lastName,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              responsive.width(5, context),
-                              responsive.width(2, context),
-                              responsive.width(5, context),
-                              responsive.width(2, context)),
+                        Padding_TextField(
                           child: Custom_TextField(
                             controller: contactController,
                             hintText: Constans.contact,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              responsive.width(5, context),
-                              responsive.width(2, context),
-                              responsive.width(5, context),
-                              responsive.width(2, context)),
+                        Padding_TextField(
                           child: Custom_TextField(
                             controller: addressController,
                             hintText: Constans.address,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              responsive.width(5, context),
-                              responsive.width(2, context),
-                              responsive.width(5, context),
-                              responsive.width(2, context)),
+                        Padding_TextField(
+                          child: Custom_TextField(
+                            controller: usernameController,
+                            hintText: Constans.username,
+                          ),
+                        ),
+                        Padding_TextField(
+                          child: Custom_TextField(
+                            controller: passwordController,
+                            hintText: Constans.password,
+                          ),
+                        ),
+                        Padding_TextField(
+                          child: Custom_TextField(
+                            controller: confirmpassController,
+                            hintText: Constans.confirmpassword,
+                          ),
+                        ),
+                        Padding_TextField(
                           child: Custom_TextField(
                             controller: classController,
                             hintText: Constans.classs,
@@ -178,12 +181,7 @@ class _AddUser extends State<AddUser> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    responsive.width(5, context),
-                                    responsive.width(2, context),
-                                    responsive.width(5, context),
-                                    responsive.width(2, context)),
+                              child: Padding_TextField(
                                 child: CustomFlatButton(
                                   text: Constans.save,
                                   color: Constans.Button_color,

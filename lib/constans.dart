@@ -33,5 +33,11 @@ class Constans {
     settings,
     signOut
   ];
+  static const List<String> classes = <String>[
+    'class 1',
+    'class 2',
+    'class 3',
+    'class 4'
+  ];
   static const double Circle_Avatar_Radius = 20;
 }

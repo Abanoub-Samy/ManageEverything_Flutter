@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manage_everything/constans.dart';
 import 'package:manage_everything/responsive.dart';
-
-import 'widgets/padding_text_field.dart';
+import 'package:manage_everything/widgets/padding_text_field.dart';
 
 class Admin extends StatefulWidget {
   @override
@@ -11,6 +10,7 @@ class Admin extends StatefulWidget {
 }
 
 String dropdownValue = 'Choose the class ....';
+bool checkValue = false;
 
 class _MyAdmin extends State<Admin> {
   Responsive responsive = new Responsive();
@@ -85,14 +85,91 @@ class _MyAdmin extends State<Admin> {
                   )
                 ],
               ),
+              Card(
+                child: Row(children: [
+                  Expanded(
+                    child: Padding_TextField(
+                        child: Text(
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(6, context),
+                          color: Colors.green),
+                    )),
+                  ),
+                  Expanded(
+                    child: Padding_TextField(
+                        child: Text(
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(6, context),
+                          color: Colors.green),
+                    )),
+                  ),
+                  Expanded(
+                    child: Padding_TextField(
+                        child: Text(
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(5, context),
+                          color: Colors.green),
+                    )),
+                  ),
+                ]),
+              ),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: ListView(
-                    children: <Widget>[],
+                  child: ListView.builder(
+                    itemBuilder: (context, position) {
+                      return Card(
+                          margin: EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    responsive.width(2, context),
+                                    2,
+                                    responsive.width(2, context),
+                                    2),
+                                child: Text('cxcxc'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    responsive.width(19, context),
+                                    2,
+                                    responsive.width(2, context),
+                                    2),
+                                child: Checkbox(
+                                  value: checkValue,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      checkValue = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    responsive.width(16, context),
+                                    2,
+                                    responsive.width(2, context),
+                                    2),
+                                child: Checkbox(
+                                  value: checkValue,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      checkValue = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ));
+                    },
+                    itemCount: 1,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

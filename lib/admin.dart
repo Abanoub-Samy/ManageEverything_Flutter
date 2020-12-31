@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:manage_everything/constans.dart';
+import 'package:manage_everything/data/moor_database.dart';
 import 'package:manage_everything/responsive.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
+import 'package:provider/provider.dart';
 
 class Admin extends StatefulWidget {
   @override
@@ -17,8 +20,8 @@ class _MyAdmin extends State<Admin> {
 
   @override
   Widget build(BuildContext context) {
-    double width = (MediaQuery.of(context).size.width) / 100;
-    double height = (MediaQuery.of(context).size.height) / 100;
+    // double width = (MediaQuery.of(context).size.width) / 100;
+    // double height = (MediaQuery.of(context).size.height) / 100;
 
     return Scaffold(
       extendBody: true,
@@ -116,67 +119,53 @@ class _MyAdmin extends State<Admin> {
                   ),
                 ]),
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: ListView.builder(
-                    itemBuilder: (context, position) {
-                      return Card(
-                          margin: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    responsive.width(2, context),
-                                    2,
-                                    responsive.width(2, context),
-                                    2),
-                                child: Text('cxcxc'),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    responsive.width(19, context),
-                                    2,
-                                    responsive.width(2, context),
-                                    2),
-                                child: Checkbox(
-                                  value: checkValue,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      checkValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    responsive.width(16, context),
-                                    2,
-                                    responsive.width(2, context),
-                                    2),
-                                child: Checkbox(
-                                  value: checkValue,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      checkValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ));
-                    },
-                    itemCount: 1,
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   child: Padding(
+              //     padding: EdgeInsets.all(6.0),
+              //     child:  _buildTableList(context),
+              //   ),
+              // ),
             ],
           ),
         ),
       ),
     );
   }
+
+  StreamBuilder <List<ManagerDataData>> _buildTableList(BuildContext context){
+    final database=Provider.of<AppDataBase>(context);
+    return StreamBuilder(
+      stream: database.watchallData(),
+      builder: (context, AsyncSnapshot<List<ManagerDataData>> snapshot){
+        final manager=snapshot.data ?? List();
+        return ListView.builder(
+          itemCount: manager.length,
+          itemBuilder: ( _ ,index){
+            final itemManager = manager[index];
+            return _buildTableItem(itemManager,database);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildTableItem(ManagerDataData managerDataData,AppDataBase appDataBase){
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      child: CheckboxListTile(
+        title: Text(managerDataData.managerFirstName),
+        value: false,
+        onChanged: (newValue){
+
+        },
+      ),
+    );
+  }
+
 }
+
+
+
 
 // void choiceAction(String choice) {
 //   if (choice == Constans.AddUser) {

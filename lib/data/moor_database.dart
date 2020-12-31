@@ -34,7 +34,7 @@ class AppDataBase extends _$AppDataBase {
             path: 'db.sqlite', logStatements: true));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   Future<List<ManagerDataData>> getallData() => select(managerData).get();
 

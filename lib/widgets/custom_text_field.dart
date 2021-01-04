@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class Custom_TextField extends StatelessWidget {
+class Custom_TextFormField extends StatelessWidget {
   final String hintText;
   final Function onTap;
+  final Function validator;
   final TextEditingController controller;
-
-  Custom_TextField({this.hintText, this.onTap, this.controller});
+  final bool obscureText ;
+  final TextInputType keyboardType;
+  Custom_TextFormField({this.hintText, this.onTap, this.controller, this.validator, this.obscureText, this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
+      validator: validator,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
       textInputAction: TextInputAction.search,
       style: TextStyle(
         fontSize: 18.0,

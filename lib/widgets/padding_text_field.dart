@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../add_user.dart';
+import '../screens/add_user.dart';
 
 // ignore: camel_case_types
-class Padding_TextField extends StatelessWidget {
+class Custom_Padding extends StatelessWidget {
   final Widget child;
 
-  const Padding_TextField({
+  const Custom_Padding({
     @required this.child,
   });
 

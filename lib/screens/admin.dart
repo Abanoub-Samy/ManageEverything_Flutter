@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:manage_everything/constans.dart';
 import 'package:manage_everything/data/moor_database.dart';
 import 'package:manage_everything/responsive.dart';
+import 'package:manage_everything/services/auth.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class Admin extends StatefulWidget {
 
 String dropdownValue = 'Choose the class ....';
 bool checkValue = false;
+AuthService _auth  = new AuthService();
 
 class _MyAdmin extends State<Admin> {
   Responsive responsive = new Responsive();
@@ -37,7 +39,8 @@ class _MyAdmin extends State<Admin> {
               } else if (choice == Constans.settings) {
                 Navigator.pushNamed(context, 'Settings');
               } else if (choice == Constans.signOut) {
-                Navigator.pushNamed(context, 'SignOut');
+                 logOut();
+                 Navigator.pushNamed(context, 'main');
               }
             },
             itemBuilder: (BuildContext context) {
@@ -91,7 +94,7 @@ class _MyAdmin extends State<Admin> {
               Card(
                 child: Row(children: [
                   Expanded(
-                    child: Padding_TextField(
+                    child: Custom_Padding(
                         child: Text(
                       Constans.classes.elementAt(0),
                       style: TextStyle(
@@ -100,7 +103,7 @@ class _MyAdmin extends State<Admin> {
                     )),
                   ),
                   Expanded(
-                    child: Padding_TextField(
+                    child: Custom_Padding(
                         child: Text(
                       Constans.classes.elementAt(0),
                       style: TextStyle(
@@ -109,7 +112,7 @@ class _MyAdmin extends State<Admin> {
                     )),
                   ),
                   Expanded(
-                    child: Padding_TextField(
+                    child: Custom_Padding(
                         child: Text(
                       Constans.classes.elementAt(0),
                       style: TextStyle(
@@ -132,50 +135,35 @@ class _MyAdmin extends State<Admin> {
     );
   }
 
-  StreamBuilder <List<ManagerDataData>> _buildTableList(BuildContext context){
-    final database=Provider.of<AppDataBase>(context);
+  StreamBuilder<List<ManagerDataData>> _buildTableList(BuildContext context) {
+    final database = Provider.of<AppDataBase>(context);
     return StreamBuilder(
       stream: database.watchallData(),
-      builder: (context, AsyncSnapshot<List<ManagerDataData>> snapshot){
-        final manager=snapshot.data ?? List();
+      builder: (context, AsyncSnapshot<List<ManagerDataData>> snapshot) {
+        final manager = snapshot.data ?? List();
         return ListView.builder(
           itemCount: manager.length,
-          itemBuilder: ( _ ,index){
+          itemBuilder: (_, index) {
             final itemManager = manager[index];
-            return _buildTableItem(itemManager,database);
+            return _buildTableItem(itemManager, database);
           },
         );
       },
     );
   }
 
-  Widget _buildTableItem(ManagerDataData managerDataData,AppDataBase appDataBase){
+  Widget _buildTableItem(
+      ManagerDataData managerDataData, AppDataBase appDataBase) {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       child: CheckboxListTile(
         title: Text(managerDataData.managerFirstName),
         value: false,
-        onChanged: (newValue){
-
-        },
+        onChanged: (newValue) {},
       ),
     );
   }
-
 }
-
-
-
-
-// void choiceAction(String choice) {
-//   if (choice == Constans.AddUser) {
-//     print('object');
-//     Navigator.pushNamed(context, 'Add User');
-//   } else if (choice == Constans.DeleteUser) {
-//     Navigator.pushNamed(context, 'Delete User');
-//   } else if (choice == Constans.Settings) {
-//     Navigator.pushNamed(context, 'Settings');
-//   } else if (choice == Constans.SignOut) {
-//     Navigator.pushNamed(context, 'SignOut');
-//   }
-// }
+void logOut() async{
+  await _auth.signOut();
+}

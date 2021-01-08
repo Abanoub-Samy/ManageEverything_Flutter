@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../responsive.dart';
+import '../const/responsive.dart';
 
 Responsive responsive = new Responsive();
 

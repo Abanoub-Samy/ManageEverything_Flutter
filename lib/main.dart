@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:manage_everything/models/managerModels.dart';
-import 'package:manage_everything/screens/admin.dart';
-import 'package:manage_everything/constans.dart';
-import 'package:manage_everything/responsive.dart';
+import 'const/responsive.dart';
 import 'package:manage_everything/screens/wrapper.dart';
 import 'package:manage_everything/services/auth.dart';
-import 'package:manage_everything/widgets/custom_flat_button.dart';
-import 'package:manage_everything/widgets/padding_text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:manage_everything/screens/add_user.dart';
-import 'package:manage_everything/screens/delete_user.dart';
-import 'package:manage_everything/screens/user.dart';
-
-// import 'package:geolocator/geolocator.dart';
-// import 'package:http/http.dart' as http;
+import 'screens/admin/add_user.dart';
+import 'screens/admin/admin.dart';
+import 'screens/admin/delete_user.dart';
+import 'screens/user/user.dart';
+import 'screens/newProject.dart';
+import 'models/churchModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +29,7 @@ class MyApp extends StatelessWidget {
         'Add User': (context) => AddUser(),
         'Delete User': (context) => DeleteUser(),
         'wrapper': (context) => Wrapper(),
+        'New Project': (context) => NewProject(),
       },
     );
   }
@@ -48,21 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Responsive screen;
   final AuthService authService = new AuthService();
 
-
-
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<ManagerModel>.value(
+    return StreamProvider<ChurchModel>.value(
       value: AuthService().user,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('الصفحة الرئيسية'),
-            centerTitle: true,
-            //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40)),
-          ),
-           body:Wrapper()
-        ),
+            body: Wrapper()),
       ),
     );
   }

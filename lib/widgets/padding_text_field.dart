@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/add_user.dart';
+import '../screens/admin/add_user.dart';
 
 // ignore: camel_case_types
 class Custom_Padding extends StatelessWidget {

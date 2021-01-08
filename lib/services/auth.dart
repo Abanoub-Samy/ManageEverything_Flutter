@@ -1,27 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:manage_everything/models/managerModels.dart';
+import 'package:manage_everything/models/churchModel.dart';
+import 'package:manage_everything/services/firestoreData.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  ManagerModel _userFromFirebase(FirebaseUser user){
-    return user != null ? ManagerModel(user.uid) :null ;
+  ChurchModel _userFromFirebase(FirebaseUser user) {
+    return user != null ? ChurchModel(churchName: user.uid) : null;
   }
-  Stream<ManagerModel> get user{
+
+  Stream<ChurchModel> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebase);
   }
 
 
-  Future signIn() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return user;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
 
   Future signOut() async {
     try {
@@ -32,10 +24,36 @@ class AuthService {
     }
   }
 
-  Future registerWithEmailAndPassword(String email , String password ) async {
+  Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
+      return _userFromFirebase(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email.trim(), password: password);
+      FirebaseUser user = result.user;
+      return _userFromFirebase(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future registerAndCreateNewProject(String email, String password,String churchName) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email.trim(), password: password.trim());
+      FirebaseUser user = result.user;
+      await FireStoreData(userID: user.uid).createNewChurch(churchName);
       return _userFromFirebase(user);
     } catch (e) {
       print(e.toString());

@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manage_everything/constans.dart';
-import 'package:manage_everything/responsive.dart';
+import 'package:manage_everything/screens/loading.dart';
+import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/constans.dart';
+import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/responsive.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:manage_everything/widgets/custom_card.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/custom_text_field.dart';
-import '../widgets/circle_avatar.dart';
-import '../widgets/padding_text_field.dart';
+import '../../widgets/circle_avatar.dart';
+import '../../widgets/padding_text_field.dart';
 
 class AddUser extends StatefulWidget {
   _AddUser createState() => _AddUser();
@@ -15,10 +16,12 @@ class AddUser extends StatefulWidget {
 
 Responsive responsive = new Responsive();
 final AuthService _auth = new AuthService();
+String error = '';
+bool loading = false ;
 
 class _AddUser extends State<AddUser> {
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
+  final nameController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
   final contactController = TextEditingController();
   final classController = TextEditingController();
   final addressController = TextEditingController();
@@ -32,7 +35,7 @@ class _AddUser extends State<AddUser> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         appBar: AppBar(
           title: Text('Add User'),
           centerTitle: true,
@@ -56,7 +59,7 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-                                save();
+
                                 setState(() {
                                   _managerHasBeenPressed =
                                       !_managerHasBeenPressed;
@@ -73,7 +76,7 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-                                save();
+
                                 setState(() {
                                   _managerHasBeenPressed = true;
                                   _assistantHasBeenPressed =
@@ -90,7 +93,7 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-                                save();
+
                                 setState(() {
                                   _managerHasBeenPressed = true;
                                   _assistantHasBeenPressed = true;
@@ -134,20 +137,21 @@ class _AddUser extends State<AddUser> {
                                   responsive.width(2, context)),
                               child: Custom_TextFormField(
                                 validator: (val) => val.toString().isEmpty
-                                    ? 'enter first name'
+                                    ? 'enter name'
                                     : null,
-                                controller: firstNameController,
-                                hintText: Constans.firstName,
+                                controller: nameController,
+                                hintText: Constans.name,
                                 obscureText: false,
                               ),
                             ),
                             Custom_Padding(
                               child: Custom_TextFormField(
                                 validator: (val) => val.toString().isEmpty
-                                    ? 'enter last name'
+                                    ? 'enter Date of Birth'
                                     : null,
-                                controller: lastNameController,
-                                hintText: Constans.lastName,
+                                controller: dateOfBirthController,
+                                hintText: Constans.dateOfBirth,
+                                keyboardType: TextInputType.datetime,
                                 obscureText: false,
                               ),
                             ),
@@ -158,7 +162,7 @@ class _AddUser extends State<AddUser> {
                                     : null,
                                 controller: contactController,
                                 hintText: Constans.contact,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.phone,
                                 obscureText: false,
                               ),
                             ),
@@ -199,7 +203,7 @@ class _AddUser extends State<AddUser> {
                                     : null,
                                 controller: confirmPassController,
                                 obscureText: true,
-                                hintText: Constans.confirmpassword,
+                                hintText: Constans.confirmPassword,
                               ),
                             ),
                             Custom_Padding(
@@ -218,14 +222,20 @@ class _AddUser extends State<AddUser> {
                                 Expanded(
                                   child: Custom_Padding(
                                     child: CustomFlatButton(
-                                      text: Constans.save,
+                                      text: Constans.add,
                                       color: Constans.Button_color,
-                                      onTap: save,
+                                      onTap: add,
                                     ),
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: Text(
+                                  error
+                              ),
+                            ),
                           ],
                         )
                       ],
@@ -240,19 +250,25 @@ class _AddUser extends State<AddUser> {
 
   @override
   void dispose() {
-    firstNameController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
-  void save() async {
+  void add() async {
     if (_formKey.currentState.validate()) {
-      if (passwordController.value.toString() ==
-          confirmPassController.value.toString()) {
+      setState(() {
+        loading = true ;
+      });
+      if (passwordController.text.toString() ==
+          confirmPassController.text.toString()) {
         dynamic result = await _auth.registerWithEmailAndPassword(
-            usernameController.value.toString(),
-            passwordController.value.toString());
+            usernameController.text.toString(),
+            passwordController.text.toString());
         if (result == null) {
-          print("not ok");
+          setState(() {
+            error='email not valid';
+            loading = false ;
+          });
         } else {
           print('every thing ok');
         }

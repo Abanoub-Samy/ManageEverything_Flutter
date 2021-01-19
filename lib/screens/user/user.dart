@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/responsive.dart';
+import 'package:manage_everything/const/responsive.dart';
 import 'package:manage_everything/widgets/custom_card.dart';
 
 class User extends StatefulWidget {

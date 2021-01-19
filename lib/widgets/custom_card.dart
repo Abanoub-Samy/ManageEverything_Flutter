@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/responsive.dart';
+import 'package:manage_everything/const/responsive.dart';
 
 class CustomCard extends StatelessWidget {
   CustomCard({@required this.color, this.child, this.onTap});

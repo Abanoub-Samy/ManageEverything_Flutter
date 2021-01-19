@@ -1,25 +1,29 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manage_everything/screens/loading.dart';
-import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/constans.dart';
-import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/const/responsive.dart';
-import 'package:manage_everything/services/auth.dart';
+import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:manage_everything/const/constans.dart';
+import 'package:manage_everything/const/responsive.dart';
+import 'package:manage_everything/services/firestoreData.dart';
+import 'package:manage_everything/widgets/circle_avatar.dart';
 import 'package:manage_everything/widgets/custom_card.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/custom_text_field.dart';
-import '../../widgets/circle_avatar.dart';
-import '../../widgets/padding_text_field.dart';
+import 'package:manage_everything/widgets/padding_text_field.dart';
 
 class AddUser extends StatefulWidget {
   _AddUser createState() => _AddUser();
 }
 
-Responsive responsive = new Responsive();
-final AuthService _auth = new AuthService();
-String error = '';
-bool loading = false ;
-
 class _AddUser extends State<AddUser> {
+  Responsive responsive = new Responsive();
+  FireStoreData _fireStoreData = new FireStoreData();
+  int selectButton;
+  String error = '';
+  File _image;
+  final picker = ImagePicker();
+  final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final dateOfBirthController = TextEditingController();
   final contactController = TextEditingController();
@@ -28,16 +32,20 @@ class _AddUser extends State<AddUser> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPassController = TextEditingController();
+  bool loading = false;
   bool _managerHasBeenPressed = true;
   bool _assistantHasBeenPressed = true;
   bool _childHasBeenPressed = true;
-  final _formKey = GlobalKey<FormState>();
+  bool usernamePasswordVisibility = false;
+  bool classVisibility = false;
+  bool listViewVisibility = false;
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    visibilityWidget();
+    return Scaffold(
         appBar: AppBar(
-          title: Text('Add User'),
+          title: Text(Constans.addUser),
           centerTitle: true,
         ),
         body: Container(
@@ -59,8 +67,9 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-
                                 setState(() {
+                                  _image = null;
+                                  selectButton = 1;
                                   _managerHasBeenPressed =
                                       !_managerHasBeenPressed;
                                   _assistantHasBeenPressed = true;
@@ -76,8 +85,9 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-
                                 setState(() {
+                                  _image = null;
+                                  selectButton = 2;
                                   _managerHasBeenPressed = true;
                                   _assistantHasBeenPressed =
                                       !_assistantHasBeenPressed;
@@ -93,8 +103,9 @@ class _AddUser extends State<AddUser> {
                                   ? Constans.Button_color
                                   : Constans.Button_change_color,
                               onTap: () {
-
                                 setState(() {
+                                  _image = null;
+                                  selectButton = 3;
                                   _managerHasBeenPressed = true;
                                   _assistantHasBeenPressed = true;
                                   _childHasBeenPressed = !_childHasBeenPressed;
@@ -113,132 +124,156 @@ class _AddUser extends State<AddUser> {
                 child: Form(
                   key: _formKey,
                   child: Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                GestureDetector(
-                                  child: circleAvatar(
-                                    assetImage: 'images/placeperson.png',
-                                    radius: Constans.Circle_Avatar_Radius,
-                                  ),
-                                  onTap: () {},
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  responsive.width(5, context),
-                                  responsive.width(5, context),
-                                  responsive.width(5, context),
-                                  responsive.width(2, context)),
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter name'
-                                    : null,
-                                controller: nameController,
-                                hintText: Constans.name,
-                                obscureText: false,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter Date of Birth'
-                                    : null,
-                                controller: dateOfBirthController,
-                                hintText: Constans.dateOfBirth,
-                                keyboardType: TextInputType.datetime,
-                                obscureText: false,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter contact'
-                                    : null,
-                                controller: contactController,
-                                hintText: Constans.contact,
-                                keyboardType: TextInputType.phone,
-                                obscureText: false,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter address'
-                                    : null,
-                                controller: addressController,
-                                hintText: Constans.address,
-                                obscureText: false,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter user name'
-                                    : null,
-                                controller: usernameController,
-                                hintText: Constans.username,
-                                obscureText: false,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter password'
-                                    : null,
-                                controller: passwordController,
-                                obscureText: true,
-                                hintText: Constans.password,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter confirm password'
-                                    : null,
-                                controller: confirmPassController,
-                                obscureText: true,
-                                hintText: Constans.confirmPassword,
-                              ),
-                            ),
-                            Custom_Padding(
-                              child: Custom_TextFormField(
-                                validator: (val) => val.toString().isEmpty
-                                    ? 'enter class name'
-                                    : null,
-                                controller: classController,
-                                hintText: Constans.classs,
-                                obscureText: false,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                  child: Custom_Padding(
-                                    child: CustomFlatButton(
-                                      text: Constans.add,
-                                      color: Constans.Button_color,
-                                      onTap: add,
+                    child: Visibility(
+                      visible: listViewVisibility,
+                      child: ListView(
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    child: CustomCircleAvatar(
+                                      radius: responsive.width(5, context),
+                                      backgroundImage: _image,
                                     ),
+                                    onTap: () {
+                                      getImage();
+                                    },
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    responsive.width(5, context),
+                                    responsive.width(5, context),
+                                    responsive.width(5, context),
+                                    responsive.width(2, context)),
+                                child: Custom_TextFormField(
+                                  validator: (val) => val.toString().isEmpty
+                                      ? (Constans.enter + Constans.name)
+                                      : null,
+                                  controller: nameController,
+                                  hintText: Constans.name,
+                                  obscureText: false,
+                                ),
+                              ),
+                              Custom_Padding(
+                                child: Custom_TextFormField(
+                                  validator: (val) => val.toString().isEmpty
+                                      ? (Constans.enter + Constans.dateOfBirth)
+                                      : null,
+                                  controller: dateOfBirthController,
+                                  hintText: Constans.dateOfBirth,
+                                  keyboardType: TextInputType.datetime,
+                                  obscureText: false,
+                                ),
+                              ),
+                              Custom_Padding(
+                                child: Custom_TextFormField(
+                                  validator: (val) => val.toString().isEmpty
+                                      ? (Constans.enter + Constans.contact)
+                                      : null,
+                                  controller: contactController,
+                                  hintText: Constans.contact,
+                                  keyboardType: TextInputType.phone,
+                                  obscureText: false,
+                                ),
+                              ),
+                              Custom_Padding(
+                                child: Custom_TextFormField(
+                                  validator: (val) => val.toString().isEmpty
+                                      ? (Constans.enter + Constans.address)
+                                      : null,
+                                  controller: addressController,
+                                  hintText: Constans.address,
+                                  obscureText: false,
+                                ),
+                              ),
+                              Visibility(
+                                visible: usernamePasswordVisibility,
+                                child: Custom_Padding(
+                                  child: Custom_TextFormField(
+                                    validator: (val) => val.toString().isEmpty
+                                        ? (Constans.enter + Constans.username)
+                                        : null,
+                                    controller: usernameController,
+                                    hintText: Constans.username,
+                                    obscureText: false,
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 40,
-                              child: Text(
-                                  error
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                              Visibility(
+                                visible: usernamePasswordVisibility,
+                                child: Custom_Padding(
+                                  child: Custom_TextFormField(
+                                    validator: (val) => val.toString().isEmpty
+                                        ? (Constans.enter + Constans.password)
+                                        : null,
+                                    controller: passwordController,
+                                    obscureText: true,
+                                    hintText: Constans.password,
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: usernamePasswordVisibility,
+                                child: Custom_Padding(
+                                  child: Custom_TextFormField(
+                                    validator: (val) => val.toString().isEmpty
+                                        ? (Constans.enter +
+                                            Constans.confirmPassword)
+                                        : null,
+                                    controller: confirmPassController,
+                                    obscureText: true,
+                                    hintText: Constans.confirmPassword,
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: classVisibility,
+                                child: Custom_Padding(
+                                  child: Custom_TextFormField(
+                                    validator: (val) => val.toString().isEmpty
+                                        ? (Constans.enter + Constans.classs)
+                                        : null,
+                                    controller: classController,
+                                    hintText: Constans.classs,
+                                    obscureText: false,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    child: Custom_Padding(
+                                      child: CustomFlatButton(
+                                        text: Constans.add,
+                                        color: Constans.Button_color,
+                                        onTap: add,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    height: 40,
+                                    child: Text(error),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -257,17 +292,22 @@ class _AddUser extends State<AddUser> {
   void add() async {
     if (_formKey.currentState.validate()) {
       setState(() {
-        loading = true ;
+        loading = true;
       });
       if (passwordController.text.toString() ==
           confirmPassController.text.toString()) {
-        dynamic result = await _auth.registerWithEmailAndPassword(
+        dynamic result = await _fireStoreData.createNewManager(
+            'id',
+            nameController.text.toString(),
+            dateOfBirthController.text.toString(),
+            addressController.text.toString(),
+            contactController.text.toString(),
             usernameController.text.toString(),
             passwordController.text.toString());
         if (result == null) {
           setState(() {
-            error='email not valid';
-            loading = false ;
+            error = 'email not valid';
+            loading = false;
           });
         } else {
           print('every thing ok');
@@ -275,6 +315,39 @@ class _AddUser extends State<AddUser> {
       } else {
         print('password not equal');
       }
+    }
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  void visibilityWidget() {
+    if (selectButton == 1) {
+      _managerHasBeenPressed
+          ? listViewVisibility = false
+          : listViewVisibility = true;
+      classVisibility = false;
+      usernamePasswordVisibility = true;
+    } else if (selectButton == 2) {
+      _assistantHasBeenPressed
+          ? listViewVisibility = false
+          : listViewVisibility = true;
+      classVisibility = true;
+      usernamePasswordVisibility = true;
+    } else if (selectButton == 3) {
+      _childHasBeenPressed
+          ? listViewVisibility = false
+          : listViewVisibility = true;
+      classVisibility = true;
+      usernamePasswordVisibility = false;
     }
   }
 }

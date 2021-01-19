@@ -27,6 +27,8 @@ class Constans {
   static const String child = "Child";
   static const String add = "Add";
   static const String newProjectString = 'New Project';
+  static const String enter = 'enter';
+
   ////////////////////////// Doubles //////////////////////////
   static const double Circle_Avatar_Radius = 20;
 
@@ -37,9 +39,7 @@ class Constans {
     settings,
     signOut
   ];
-  static const List<String> newProject = <String>[
-    newProjectString
-  ];
+  static const List<String> newProject = <String>[newProjectString];
   static const List<String> classes = <String>[
     'class 1',
     'class 2',

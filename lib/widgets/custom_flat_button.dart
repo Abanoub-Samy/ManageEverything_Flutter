@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:manage_everything/const/responsive.dart';
 
-import '../const/responsive.dart';
 
-Responsive responsive = new Responsive();
 
 class CustomFlatButton extends StatelessWidget {
+
   CustomFlatButton(
       {this.textColor, this.color, @required this.onTap, @required this.text});
 
-  Color color;
+  final Color color;
   final Color textColor;
   final Function onTap;
   final String text;
 
   @override
   Widget build(BuildContext context) {
+    Responsive responsive = new Responsive();
     return Padding(
       padding: EdgeInsets.all(4),
       child: FlatButton(

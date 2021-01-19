@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:manage_everything/const/constans.dart';
+import 'package:manage_everything/const/responsive.dart';
 import 'package:manage_everything/screens/loading.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
-import '../../const/constans.dart';
-import '../../const/responsive.dart';
 
 final AuthService _auth = new AuthService();
 String error = '';

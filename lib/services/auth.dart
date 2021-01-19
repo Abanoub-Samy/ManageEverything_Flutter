@@ -13,8 +13,6 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebase);
   }
 
-
-
   Future signOut() async {
     try {
       return await _auth.signOut();
@@ -48,12 +46,28 @@ class AuthService {
     }
   }
 
-  Future registerAndCreateNewProject(String email, String password,String churchName) async {
+  Future registerAndCreateNewProject(
+      String email, String password, String churchName) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
       await FireStoreData(userID: user.uid).createNewChurch(churchName);
+      return _userFromFirebase(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future createNewManager(String id, String name, String dateBirth,
+      String address, String contact, String userName, String password) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: userName.trim(), password: password.trim());
+      FirebaseUser user = result.user;
+      await FireStoreData(userID: user.uid).createNewManager(
+          id, name, dateBirth, address, contact, userName, password);
       return _userFromFirebase(user);
     } catch (e) {
       print(e.toString());

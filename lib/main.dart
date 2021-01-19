@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'const/responsive.dart';
+import 'package:manage_everything/const/responsive.dart';
+import 'package:manage_everything/models/churchModel.dart';
+import 'package:manage_everything/screens/admin/add_user.dart';
+import 'package:manage_everything/screens/admin/admin.dart';
+import 'package:manage_everything/screens/admin/delete_user.dart';
+import 'package:manage_everything/screens/newProject.dart';
+import 'package:manage_everything/screens/user/user.dart';
 import 'package:manage_everything/screens/wrapper.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'screens/admin/add_user.dart';
-import 'screens/admin/admin.dart';
-import 'screens/admin/delete_user.dart';
-import 'screens/user/user.dart';
-import 'screens/newProject.dart';
-import 'models/churchModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,8 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamProvider<ChurchModel>.value(
       value: AuthService().user,
       child: SafeArea(
-        child: Scaffold(
-            body: Wrapper()),
+        child: Scaffold(body: Wrapper()),
       ),
     );
   }

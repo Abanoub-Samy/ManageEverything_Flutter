@@ -23,6 +23,7 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   flutter_spinkit: ^4.0.0
   firebase_storage: ^3.0.3
+  intl: ^0.16.1
 
 
   cupertino_icons: ^0.1.3

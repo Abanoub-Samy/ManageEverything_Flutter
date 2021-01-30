@@ -13,7 +13,7 @@ class AdminList extends StatefulWidget {
 }
 
 class _AdminList extends State<AdminList> {
-  String dropdownValue = 'Choose the class ....';
+  String dropdownValue;
   bool checkValue = false;
   Responsive responsive = new Responsive();
 
@@ -30,7 +30,7 @@ class _AdminList extends State<AdminList> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   DropdownButton<String>(
-                    value: dropdownValue ,
+                    value: dropdownValue,
                     icon: Icon(Icons.keyboard_arrow_down),
                     iconSize: 20,
                     elevation: 16,
@@ -45,6 +45,7 @@ class _AdminList extends State<AdminList> {
                       });
                     },
                     items: <String>[
+                      'Choose the class ....',
                       'One',
                       'Two',
                       'three',
@@ -63,40 +64,39 @@ class _AdminList extends State<AdminList> {
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          Constans.classes.elementAt(0),
-                          style: TextStyle(
-                              fontSize: responsive.width(6, context),
-                              color: Colors.green),
-                        )),
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(6, context),
+                          color: Colors.green),
+                    )),
                   ),
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          Constans.classes.elementAt(0),
-                          style: TextStyle(
-                              fontSize: responsive.width(6, context),
-                              color: Colors.green),
-                        )),
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(6, context),
+                          color: Colors.green),
+                    )),
                   ),
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          Constans.classes.elementAt(0),
-                          style: TextStyle(
-                              fontSize: responsive.width(5, context),
-                              color: Colors.green),
-                        )),
+                      Constans.classes.elementAt(0),
+                      style: TextStyle(
+                          fontSize: responsive.width(5, context),
+                          color: Colors.green),
+                    )),
                   ),
                 ]),
               ),
               Container(
                 child: Expanded(
                   child: ListView.builder(
-                    itemCount:church.length,
-                    itemBuilder: (context,index){
+                    itemCount: church.length,
+                    itemBuilder: (context, index) {
                       return ListShow(churchModel: church[index]);
                     },
-
                   ),
                 ),
               ),
@@ -106,5 +106,4 @@ class _AdminList extends State<AdminList> {
       ),
     );
   }
-
 }

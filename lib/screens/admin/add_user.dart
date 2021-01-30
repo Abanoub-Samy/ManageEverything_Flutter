@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:manage_everything/const/constans.dart';
 import 'package:manage_everything/const/responsive.dart';
 import 'package:manage_everything/services/firestoreData.dart';
@@ -39,6 +40,7 @@ class _AddUser extends State<AddUser> {
   bool usernamePasswordVisibility = false;
   bool classVisibility = false;
   bool listViewVisibility = false;
+  DateTime _selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -161,14 +163,30 @@ class _AddUser extends State<AddUser> {
                                 ),
                               ),
                               Custom_Padding(
-                                child: Custom_TextFormField(
+                                child: TextFormField(
                                   validator: (val) => val.toString().isEmpty
                                       ? (Constans.enter + Constans.dateOfBirth)
                                       : null,
                                   controller: dateOfBirthController,
-                                  hintText: Constans.dateOfBirth,
+                                  focusNode: AlwaysDisabledFocusNode(),
                                   keyboardType: TextInputType.datetime,
                                   obscureText: false,
+                                  textInputAction: TextInputAction.search,
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.black38,
+                                    hintText: Constans.dateOfBirth,
+                                  ),
+                                  onTap: () {
+                                    _selectDate(context);
+                                  },
                                 ),
                               ),
                               Custom_Padding(
@@ -350,4 +368,40 @@ class _AddUser extends State<AddUser> {
       usernamePasswordVisibility = false;
     }
   }
+
+  _selectDate(BuildContext context) async {
+    DateTime newSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2040),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.orange,
+                onPrimary: Colors.white,
+                surface: Colors.orange,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.black,
+            ),
+            child: child,
+          );
+        });
+
+    if (newSelectedDate != null) {
+      _selectedDate = newSelectedDate;
+      dateOfBirthController
+        ..text = DateFormat.yMMMd().format(_selectedDate)
+        ..selection = TextSelection.fromPosition(TextPosition(
+            offset: dateOfBirthController.text.length,
+            affinity: TextAffinity.upstream));
+    }
+  }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }

@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:manage_everything/models/churchModel.dart';
+import 'package:manage_everything/models/organizationModel.dart';
 import 'package:manage_everything/services/firestoreData.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  ChurchModel _userFromFirebase(FirebaseUser user) {
-    return user != null ? ChurchModel(churchName: user.uid) : null;
+  OrganizationModel _userFromFirebase(FirebaseUser user) {
+    return user != null ? OrganizationModel(organizationName: user.uid) : null;
   }
 
-  Stream<ChurchModel> get user {
+  Stream<OrganizationModel> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebase);
   }
 

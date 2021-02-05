@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:manage_everything/const/constans.dart';
 import 'package:manage_everything/const/responsive.dart';
-import 'package:manage_everything/models/churchModel.dart';
-import 'package:manage_everything/screens/admin/add_user.dart';
+import 'package:manage_everything/models/organizationModel.dart';
+import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/screens/admin/addUser/add_user.dart';
 import 'package:manage_everything/screens/admin/admin.dart';
 import 'package:manage_everything/screens/admin/delete_user.dart';
 import 'package:manage_everything/screens/newProject.dart';
@@ -10,26 +11,27 @@ import 'package:manage_everything/screens/wrapper.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(ChangeNotifierProvider<Constants>(
+      create: (_) => Constants(),
+      child: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final constants = Provider.of<Constants>(context);
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: constants.theme == true ? ThemeData.dark() : ThemeData.light(),
       home: MyHomePage(),
       routes: {
         'main': (context) => MyApp(),
-        'admin': (context) => Admin(),
-        'user': (context) => User(),
-        'Add User': (context) => AddUser(),
-        'Delete User': (context) => DeleteUser(),
+        constants.admin: (context) => Admin(),
+        constants.user: (context) => User(),
+        constants.addUser: (context) => AddUser(),
+        constants.deleteUser: (context) => DeleteUser(),
         'wrapper': (context) => Wrapper(),
-        'New Project': (context) => NewProject(),
+        constants.newProjectString: (context) => NewProject(),
       },
     );
   }
@@ -46,10 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<ChurchModel>.value(
+    return StreamProvider<OrganizationModel>.value(
       value: AuthService().user,
       child: SafeArea(
-        child: Scaffold(body: Wrapper()),
+        child: Scaffold(body: Admin()),
       ),
     );
   }

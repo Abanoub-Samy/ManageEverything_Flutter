@@ -6,20 +6,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:manage_everything/const/constans.dart';
 import 'package:manage_everything/const/responsive.dart';
+import 'package:manage_everything/controls/addUserController.dart';
+import 'package:manage_everything/screens/admin/addUser/customButtonsForAddUserPage.dart';
 import 'package:manage_everything/services/firestoreData.dart';
 import 'package:manage_everything/widgets/circle_avatar.dart';
 import 'package:manage_everything/widgets/custom_card.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/custom_text_field.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
+import 'package:provider/provider.dart';
 
 class AddUser extends StatefulWidget {
   _AddUser createState() => _AddUser();
 }
 
 class _AddUser extends State<AddUser> {
-  Responsive responsive = new Responsive();
   FireStoreData _fireStoreData = new FireStoreData();
+  Responsive responsive = new Responsive();
   int selectButton;
   String error = '';
   File _image;
@@ -41,13 +44,15 @@ class _AddUser extends State<AddUser> {
   bool classVisibility = false;
   bool listViewVisibility = false;
   DateTime _selectedDate;
+  AddUserController addUserController;
 
   @override
   Widget build(BuildContext context) {
+    final constants = Provider.of<Constants>(context);
     visibilityWidget();
     return Scaffold(
         appBar: AppBar(
-          title: Text(Constans.addUser),
+          title: Text(constants.addUser),
           centerTitle: true,
         ),
         body: Container(
@@ -60,14 +65,14 @@ class _AddUser extends State<AddUser> {
                     height: responsive.height(12, context),
                     width: responsive.width(100, context),
                     child: CustomCard(
-                      color: Colors.black38,
+                      color: constants.customCardColor,
                       child: Row(
                         children: [
                           Expanded(
                             child: CustomFlatButton(
                               color: _managerHasBeenPressed
-                                  ? Constans.Button_color
-                                  : Constans.Button_change_color,
+                                  ? constants.buttonColor
+                                  : constants.buttonChangeColor,
                               onTap: () {
                                 setState(() {
                                   _image = null;
@@ -78,14 +83,14 @@ class _AddUser extends State<AddUser> {
                                   _childHasBeenPressed = true;
                                 });
                               },
-                              text: Constans.manager,
+                              text: constants.manager,
                             ),
                           ),
                           Expanded(
                             child: CustomFlatButton(
                               color: _assistantHasBeenPressed
-                                  ? Constans.Button_color
-                                  : Constans.Button_change_color,
+                                  ? constants.buttonColor
+                                  : constants.buttonChangeColor,
                               onTap: () {
                                 setState(() {
                                   _image = null;
@@ -96,14 +101,14 @@ class _AddUser extends State<AddUser> {
                                   _childHasBeenPressed = true;
                                 });
                               },
-                              text: Constans.assistant,
+                              text: constants.assistant,
                             ),
                           ),
                           Expanded(
                             child: CustomFlatButton(
                               color: _childHasBeenPressed
-                                  ? Constans.Button_color
-                                  : Constans.Button_change_color,
+                                  ? constants.buttonColor
+                                  : constants.buttonChangeColor,
                               onTap: () {
                                 setState(() {
                                   _image = null;
@@ -113,13 +118,14 @@ class _AddUser extends State<AddUser> {
                                   _childHasBeenPressed = !_childHasBeenPressed;
                                 });
                               },
-                              text: Constans.child,
+                              text: constants.child,
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
+
                 ],
               ),
               Container(
@@ -142,7 +148,8 @@ class _AddUser extends State<AddUser> {
                                       backgroundImage: _image,
                                     ),
                                     onTap: () {
-                                      getImage();
+                                      addUserController.getImage(
+                                          picker, _image);
                                     },
                                   )
                                 ],
@@ -155,17 +162,18 @@ class _AddUser extends State<AddUser> {
                                     responsive.width(2, context)),
                                 child: Custom_TextFormField(
                                   validator: (val) => val.toString().isEmpty
-                                      ? (Constans.enter + Constans.name)
+                                      ? (constants.enter + constants.name)
                                       : null,
                                   controller: nameController,
-                                  hintText: Constans.name,
+                                  hintText: constants.name,
                                   obscureText: false,
                                 ),
                               ),
                               Custom_Padding(
                                 child: TextFormField(
                                   validator: (val) => val.toString().isEmpty
-                                      ? (Constans.enter + Constans.dateOfBirth)
+                                      ? (constants.enter +
+                                          constants.dateOfBirth)
                                       : null,
                                   controller: dateOfBirthController,
                                   focusNode: AlwaysDisabledFocusNode(),
@@ -182,20 +190,20 @@ class _AddUser extends State<AddUser> {
                                     ),
                                     filled: true,
                                     fillColor: Colors.black38,
-                                    hintText: Constans.dateOfBirth,
+                                    hintText: constants.dateOfBirth,
                                   ),
                                   onTap: () {
-                                    _selectDate(context);
+                                    selectDate(context);
                                   },
                                 ),
                               ),
                               Custom_Padding(
                                 child: Custom_TextFormField(
                                   validator: (val) => val.toString().isEmpty
-                                      ? (Constans.enter + Constans.contact)
+                                      ? (constants.enter + constants.contact)
                                       : null,
                                   controller: contactController,
-                                  hintText: Constans.contact,
+                                  hintText: constants.contact,
                                   keyboardType: TextInputType.phone,
                                   obscureText: false,
                                 ),
@@ -203,10 +211,10 @@ class _AddUser extends State<AddUser> {
                               Custom_Padding(
                                 child: Custom_TextFormField(
                                   validator: (val) => val.toString().isEmpty
-                                      ? (Constans.enter + Constans.address)
+                                      ? (constants.enter + constants.address)
                                       : null,
                                   controller: addressController,
-                                  hintText: Constans.address,
+                                  hintText: constants.address,
                                   obscureText: false,
                                 ),
                               ),
@@ -215,10 +223,10 @@ class _AddUser extends State<AddUser> {
                                 child: Custom_Padding(
                                   child: Custom_TextFormField(
                                     validator: (val) => val.toString().isEmpty
-                                        ? (Constans.enter + Constans.username)
+                                        ? (constants.enter + constants.username)
                                         : null,
                                     controller: usernameController,
-                                    hintText: Constans.username,
+                                    hintText: constants.username,
                                     obscureText: false,
                                   ),
                                 ),
@@ -228,11 +236,11 @@ class _AddUser extends State<AddUser> {
                                 child: Custom_Padding(
                                   child: Custom_TextFormField(
                                     validator: (val) => val.toString().isEmpty
-                                        ? (Constans.enter + Constans.password)
+                                        ? (constants.enter + constants.password)
                                         : null,
                                     controller: passwordController,
                                     obscureText: true,
-                                    hintText: Constans.password,
+                                    hintText: constants.password,
                                   ),
                                 ),
                               ),
@@ -241,12 +249,12 @@ class _AddUser extends State<AddUser> {
                                 child: Custom_Padding(
                                   child: Custom_TextFormField(
                                     validator: (val) => val.toString().isEmpty
-                                        ? (Constans.enter +
-                                            Constans.confirmPassword)
+                                        ? (constants.enter +
+                                            constants.confirmPassword)
                                         : null,
                                     controller: confirmPassController,
                                     obscureText: true,
-                                    hintText: Constans.confirmPassword,
+                                    hintText: constants.confirmPassword,
                                   ),
                                 ),
                               ),
@@ -255,10 +263,10 @@ class _AddUser extends State<AddUser> {
                                 child: Custom_Padding(
                                   child: Custom_TextFormField(
                                     validator: (val) => val.toString().isEmpty
-                                        ? (Constans.enter + Constans.classs)
+                                        ? (constants.enter + constants.classes)
                                         : null,
                                     controller: classController,
-                                    hintText: Constans.classs,
+                                    hintText: constants.classes,
                                     obscureText: false,
                                   ),
                                 ),
@@ -270,8 +278,8 @@ class _AddUser extends State<AddUser> {
                                   Expanded(
                                     child: Custom_Padding(
                                       child: CustomFlatButton(
-                                        text: Constans.add,
-                                        color: Constans.Button_color,
+                                        text: constants.add,
+                                        color: constants.buttonColor,
                                         onTap: add,
                                       ),
                                     ),
@@ -306,22 +314,21 @@ class _AddUser extends State<AddUser> {
     nameController.dispose();
     super.dispose();
   }
-
   void add() async {
     if (_formKey.currentState.validate()) {
       setState(() {
         loading = true;
       });
-      if (passwordController.text.toString() ==
-          confirmPassController.text.toString()) {
+      if (passwordController == confirmPassController) {
         dynamic result = await _fireStoreData.createNewManager(
-            'id',
-            nameController.text.toString(),
-            dateOfBirthController.text.toString(),
-            addressController.text.toString(),
-            contactController.text.toString(),
-            usernameController.text.toString(),
-            passwordController.text.toString());
+          'id',
+          nameController.text.toString(),
+          dateOfBirthController.text.toString(),
+          addressController.text.toString(),
+          contactController.text.toString(),
+          usernameController.text.toString(),
+          passwordController.text.toString(),
+        );
         if (result == null) {
           setState(() {
             error = 'email not valid';
@@ -335,6 +342,7 @@ class _AddUser extends State<AddUser> {
       }
     }
   }
+
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -369,7 +377,7 @@ class _AddUser extends State<AddUser> {
     }
   }
 
-  _selectDate(BuildContext context) async {
+  selectDate(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
         context: context,
         initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
@@ -399,9 +407,33 @@ class _AddUser extends State<AddUser> {
             affinity: TextAffinity.upstream));
     }
   }
+  // void managerButtonPressed(){
+  //   _image = null;
+  //   selectButton = 1;
+  //   _managerHasBeenPressed =
+  //   !_managerHasBeenPressed;
+  //   _assistantHasBeenPressed = true;
+  //   _childHasBeenPressed = true;
+  // }
+  // void assistantButtonPressed(){
+  //   _image = null;
+  //   selectButton = 2;
+  //   _managerHasBeenPressed = true;
+  //   _assistantHasBeenPressed =
+  //   !_assistantHasBeenPressed;
+  //   _childHasBeenPressed = true;
+  // }
+  // void userButtonPressed(){
+  //   _image = null;
+  //   selectButton = 3;
+  //   _managerHasBeenPressed = true;
+  //   _assistantHasBeenPressed = true;
+  //   _childHasBeenPressed = !_childHasBeenPressed;
+  // }
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
+

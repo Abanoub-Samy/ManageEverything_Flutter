@@ -5,6 +5,7 @@ import 'package:manage_everything/const/responsive.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -24,10 +25,11 @@ class _NewProject extends State<NewProject> {
 
   @override
   Widget build(BuildContext context) {
+    final constants = Provider.of<Constants>(context);
     Responsive responsive = new Responsive();
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constans.newProjectString),
+        title: Text(constants.newProjectString),
         centerTitle: true,
       ),
       body: Container(
@@ -44,7 +46,7 @@ class _NewProject extends State<NewProject> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.playlist_add),
-                            labelText: Constans.newProjectString,
+                            labelText: constants.newProjectString,
                           ),
                           autocorrect: false,
                           validator: (val) => val.toString().isEmpty
@@ -57,7 +59,7 @@ class _NewProject extends State<NewProject> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email),
-                            labelText: Constans.username,
+                            labelText: constants.username,
                           ),
                           autocorrect: false,
                           validator: (val) =>
@@ -69,7 +71,7 @@ class _NewProject extends State<NewProject> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
-                            labelText: Constans.password,
+                            labelText: constants.password,
                           ),
                           autocorrect: false,
                           validator: (val) =>
@@ -82,7 +84,7 @@ class _NewProject extends State<NewProject> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
-                            labelText: Constans.confirmPassword,
+                            labelText: constants.confirmPassword,
                           ),
                           autocorrect: false,
                           validator: (val) => val.toString().isEmpty
@@ -97,8 +99,8 @@ class _NewProject extends State<NewProject> {
                           Expanded(
                             child: Custom_Padding(
                               child: CustomFlatButton(
-                                  color: Constans.Button_color,
-                                  textColor: Constans.Button_text_color,
+                                  color: constants.buttonColor,
+                                  textColor: constants.buttonTextColor,
                                   onTap: (){
                                     createNewProject();
                                   },

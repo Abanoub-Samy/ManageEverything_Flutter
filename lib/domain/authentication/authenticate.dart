@@ -6,6 +6,7 @@ import 'package:manage_everything/screens/loading.dart';
 import 'package:manage_everything/services/auth.dart';
 import 'package:manage_everything/widgets/custom_flat_button.dart';
 import 'package:manage_everything/widgets/padding_text_field.dart';
+import 'package:provider/provider.dart';
 
 final AuthService _auth = new AuthService();
 String error = '';
@@ -21,6 +22,7 @@ class _Authenticate extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
+    final constants = Provider.of<Constants>(context);
     Responsive responsive = new Responsive();
     double width = (MediaQuery.of(context).size.width) / 100;
     double height = (MediaQuery.of(context).size.height) / 100;
@@ -34,12 +36,12 @@ class _Authenticate extends State<Authenticate> {
               actions: <Widget>[
                 PopupMenuButton<String>(
                   onSelected: (String choice) {
-                    if (choice == Constans.newProjectString) {
+                    if (choice == constants.newProjectString) {
                       Navigator.pushNamed(context, 'New Project');
                     }
                   },
                   itemBuilder: (BuildContext context) {
-                    return Constans.newProject.map((String choice) {
+                    return constants.newProject.map((String choice) {
                       return PopupMenuItem<String>(
                           value: choice, child: Text(choice));
                     }).toList();
@@ -92,8 +94,8 @@ class _Authenticate extends State<Authenticate> {
                                     padding: EdgeInsets.fromLTRB(10 * width,
                                         5 * height, 10 * width, 10 * height),
                                     child: CustomFlatButton(
-                                        color: Constans.Button_color,
-                                        textColor: Constans.Button_text_color,
+                                        color: constants.buttonColor,
+                                        textColor: constants.buttonTextColor,
                                         onTap: signIn,
                                         text: 'sign in'),
                                   ),

@@ -53,6 +53,7 @@ class _MyAdmin extends State<Admin> {
   void settingsPressed(BuildContext context) {
     final constants = Provider.of<Constants>(context);
     showModalBottomSheet<void>(
+        isScrollControlled: true,
         context: context,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         builder: (context) {
@@ -112,16 +113,16 @@ class _MyAdmin extends State<Admin> {
         switchControl = true;
         constants.theme = true;
         textHolder = constants.darkMode;
-        constants.buttonColor=Colors.orange;
-        constants.customCardColor=Colors.black38;
+        constants.buttonColor = Colors.orange;
+        constants.customCardColor = Colors.black38;
       });
     } else {
       setState(() {
         switchControl = false;
         constants.theme = false;
         textHolder = constants.lightMode;
-        constants.buttonColor=Colors.blueAccent;
-        constants.customCardColor=Colors.greenAccent;
+        constants.buttonColor = Colors.blueAccent;
+        constants.customCardColor = Colors.greenAccent;
       });
     }
   }

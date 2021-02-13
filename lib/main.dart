@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manage_everything/const/constans.dart';
 import 'package:manage_everything/const/responsive.dart';
 import 'package:manage_everything/models/organizationModel.dart';
-import 'file:///E:/work/army/android/flutter/ManageEverything_Flutter/lib/screens/admin/addUser/add_user.dart';
+import 'package:manage_everything/screens/admin/addUser/add_user.dart';
 import 'package:manage_everything/screens/admin/admin.dart';
 import 'package:manage_everything/screens/admin/delete_user.dart';
 import 'package:manage_everything/screens/newProject.dart';

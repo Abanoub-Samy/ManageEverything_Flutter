@@ -125,7 +125,6 @@ class _AddUser extends State<AddUser> {
                       ),
                     ),
                   ),
-
                 ],
               ),
               Container(
@@ -147,10 +146,7 @@ class _AddUser extends State<AddUser> {
                                       radius: responsive.width(5, context),
                                       backgroundImage: _image,
                                     ),
-                                    onTap: () {
-                                      addUserController.getImage(
-                                          picker, _image);
-                                    },
+                                    onTap: getImage,
                                   )
                                 ],
                               ),
@@ -314,6 +310,7 @@ class _AddUser extends State<AddUser> {
     nameController.dispose();
     super.dispose();
   }
+
   void add() async {
     if (_formKey.currentState.validate()) {
       setState(() {
@@ -342,7 +339,6 @@ class _AddUser extends State<AddUser> {
       }
     }
   }
-
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -436,4 +432,3 @@ class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
-

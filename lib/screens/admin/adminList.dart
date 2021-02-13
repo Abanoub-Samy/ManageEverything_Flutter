@@ -19,7 +19,7 @@ class _AdminList extends State<AdminList> {
 
   @override
   Widget build(BuildContext context) {
-    final church = Provider.of<List<OrganizationModel>>(context);
+    final organize = Provider.of<List<OrganizationModel>>(context);
     final constants = Provider.of<Constants>(context);
     return Scaffold(
       body: Center(
@@ -64,7 +64,7 @@ class _AdminList extends State<AdminList> {
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          constants.classesList.elementAt(0),
+                      constants.classesList.elementAt(0),
                       style: TextStyle(
                           fontSize: responsive.width(6, context),
                           color: Colors.green),
@@ -73,7 +73,7 @@ class _AdminList extends State<AdminList> {
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          constants.classesList.elementAt(0),
+                      constants.classesList.elementAt(0),
                       style: TextStyle(
                           fontSize: responsive.width(6, context),
                           color: Colors.green),
@@ -82,7 +82,7 @@ class _AdminList extends State<AdminList> {
                   Expanded(
                     child: Custom_Padding(
                         child: Text(
-                          constants.classesList.elementAt(0),
+                      constants.classesList.elementAt(0),
                       style: TextStyle(
                           fontSize: responsive.width(5, context),
                           color: Colors.green),
@@ -93,9 +93,9 @@ class _AdminList extends State<AdminList> {
               Container(
                 child: Expanded(
                   child: ListView.builder(
-                    itemCount: church.length,
+                    itemCount: organize.length,
                     itemBuilder: (context, index) {
-                      return ListShow(organizationModel: church[index]);
+                      return ListShow(organizationModel: organize[index]);
                     },
                   ),
                 ),
